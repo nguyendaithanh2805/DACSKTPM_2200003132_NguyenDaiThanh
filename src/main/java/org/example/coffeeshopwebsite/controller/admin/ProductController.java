@@ -44,5 +44,21 @@ public class ProductController {
         }
     }
 
+    // CREATE
+    @GetMapping("/products/form")
+    public String createProduct(Model model) {
+        model.addAttribute("product", new Product());
+        logger.info("Access successfully");
+        return "admin/productForm";
+    }
+
+    @PostMapping("product/save")
+    public String saveProduct(@ModelAttribute("product") Product product, @RequestParam("imageFile") MultipartFile file) {
+        handleImageUpload(product, file);
+        productService.saveProduct(product);
+        return "redirect:/admin/products";
+    }
+
+
 
 }
