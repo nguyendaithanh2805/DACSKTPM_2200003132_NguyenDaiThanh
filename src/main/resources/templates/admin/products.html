@@ -80,12 +80,12 @@
               <td th:text="${product.getCategory().getName()}"></td>
               <td><img th:src="@{../user/images/__${product.getImage()}__}" alt="" style="max-width: 50%;"></td>
               <td>
-                <a th:href="@{/admin/products/update(id = ${product.id})}"><button class="btn btn-primary">Update</button> </a>
-                <a th:href="@{/admin/products/delete(id = ${product.id})}"><button class="btn btn-danger">Delete</button> </a>
+                <a th:href="@{/admin/products-update(id = ${product.id})}"><button class="btn btn-primary">Update</button> </a>
+                <a th:href="@{/admin/products-delete(id = ${product.id})}"><button class="btn btn-danger">Delete</button> </a>
               </td>
             </tr>
           </tbody>
-          <a th:href="@{/admin/products/form}"><button class="btn btn-success" type="submit" style="margin-bottom: 20px;">Add a new Product</button></a>
+          <a th:href="@{/admin/products-form}"><button class="btn btn-success" type="submit" style="margin-bottom: 20px;">Add a new Product</button></a>
           <a th:href="@{/admin/add-category}"><button class="btn btn-primary" type="submit" style="margin-bottom: 20px; margin-left: 10px">Add a new Category</button></a>
         </table>
 
