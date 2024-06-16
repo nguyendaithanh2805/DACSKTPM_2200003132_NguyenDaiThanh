@@ -24,8 +24,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public void saveProduct(Product product) {
-        Optional<Product> optionalProduct = productRepository.findById(product.getId());
-        if (optionalProduct.isEmpty()) {
+        if (product.getId() == null) {
             product.setName(product.getName());
             product.setDiscount(product.getDiscount());
             product.setImage(product.getImage());
@@ -34,19 +33,27 @@ public class ProductServiceImpl implements ProductService{
             product.setCategory(product.getCategory());
             product.setAccount(product.getAccount());
             productRepository.save(product);
+        } else {
+            Optional<Product> optionalProduct = productRepository.findById(product.getId());
+            if (optionalProduct.isPresent()) {
+                Product existingProduct = getExistingProduct(product, optionalProduct);
+                productRepository.save(existingProduct);
+            } else
+                throw new RuntimeException("Product not found for ID ::" + product.getId());
         }
-        else {
-            System.out.println("Product Id already exists");
-            Product existingProduct = optionalProduct.get();
-            existingProduct.setName(product.getName());
-            product.setDiscount(product.getDiscount());
-            existingProduct.setDescription(product.getDescription());
-            existingProduct.setImage(product.getImage());
-            existingProduct.setQuantity(product.getQuantity());
-            existingProduct.setSellingPrice(product.getSellingPrice() - product.getDiscount());
-            existingProduct.setCategory(product.getCategory());
-            existingProduct.setAccount(product.getAccount());
-        }
+    }
+
+    private Product getExistingProduct(Product product, Optional<Product> optionalProduct) {
+        Product existingProduct = optionalProduct.get();
+        existingProduct.setName(product.getName());
+        existingProduct.setDiscount(product.getDiscount());
+        existingProduct.setDescription(product.getDescription());
+        existingProduct.setImage(product.getImage());
+        existingProduct.setQuantity(product.getQuantity());
+        existingProduct.setSellingPrice(product.getSellingPrice() - product.getDiscount());
+        existingProduct.setCategory(product.getCategory());
+        existingProduct.setAccount(product.getAccount());
+        return existingProduct;
     }
 
     @Override
