@@ -59,6 +59,19 @@ public class ProductController {
         return "redirect:/admin/products";
     }
 
+    // READ
+    @GetMapping("/products")
+    public String index(Model model) {
+        List<Product> products = productService.getAllProducts();
+        model.addAttribute("products", products);
+        logger.info("Access successfully");
+        return "admin/products";
+    }
+
+    // UPDATE
+
+    // DELETE
+
 
 
 }
