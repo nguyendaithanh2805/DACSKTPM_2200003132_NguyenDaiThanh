@@ -45,14 +45,14 @@ public class ProductController {
     }
 
     // CREATE
-    @GetMapping("/products/form")
+    @GetMapping("/products-form")
     public String createProduct(Model model) {
         model.addAttribute("product", new Product());
         logger.info("Access successfully");
         return "admin/productForm";
     }
 
-    @PostMapping("product/save")
+    @PostMapping("product-save")
     public String saveProduct(@ModelAttribute("product") Product product, @RequestParam("imageFile") MultipartFile file) {
         handleImageUpload(product, file);
         productService.saveProduct(product);
@@ -70,7 +70,7 @@ public class ProductController {
     }
 
     // UPDATE
-    @GetMapping("/products/update")
+    @GetMapping("/products-update")
     public String updateProduct(Model model, @RequestParam Long id) {
         Product product = productService.getProductById(id);
         model.addAttribute("product", product);
@@ -78,11 +78,9 @@ public class ProductController {
     }
 
     // DELETE
-    @GetMapping("/products/delete")
+    @GetMapping("/products-delete")
     public String deleteProduct(@RequestParam Long id) {
       productService.deleteProductById(id);
       return "redirect:/admin/products";
     }
-
-
 }
