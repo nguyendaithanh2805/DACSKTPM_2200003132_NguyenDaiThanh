@@ -25,9 +25,37 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public void saveProduct(Product product) {
         Optional<Product> optionalProduct = productRepository.findById(product.getId());
-        if (optionalProduct.isEmpty())
+        if (optionalProduct.isEmpty()) {
             product.setName(product.getName());
-        else
+            product.setDiscount(product.getDiscount());
+            product.setImage(product.getImage());
+            product.setQuantity(product.getQuantity());
+            product.setSellingPrice(product.getSellingPrice());
+            product.setCategory(product.getCategory());
+            product.setAccount(product.getAccount());
+            productRepository.save(product);
+        }
+        else {
             System.out.println("Product Id already exists");
+            Product existingProduct = optionalProduct.get();
+            existingProduct.setName(product.getName());
+            product.setDiscount(product.getDiscount());
+            existingProduct.setDescription(product.getDescription());
+            existingProduct.setImage(product.getImage());
+            existingProduct.setQuantity(product.getQuantity());
+            existingProduct.setSellingPrice(product.getSellingPrice() - product.getDiscount());
+            existingProduct.setCategory(product.getCategory());
+            existingProduct.setAccount(product.getAccount());
+        }
+    }
+
+    @Override
+    public Product getProductById(Long id) {
+        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not founded ID :: " + id));
+    }
+
+    @Override
+    public void deleteProductById(Long id) {
+        productRepository.deleteById(id);
     }
 }
