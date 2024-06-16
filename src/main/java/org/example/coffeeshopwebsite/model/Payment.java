@@ -12,7 +12,7 @@ public class Payment {
     @Column(name = "payment_method", nullable = false)
     private String paymentMethod;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "order_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Payment_Order"))
     private Order order;
 

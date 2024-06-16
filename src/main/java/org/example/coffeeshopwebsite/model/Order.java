@@ -24,8 +24,8 @@ public class Order {
     @ManyToMany(mappedBy = "orders")
     private List<Product> products;
 
-    @OneToMany(mappedBy = "order")
-    private List<Payment> payments;
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Payment payment;
 
     @OneToOne
     @JoinColumn(name = "shipping_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Order_Shipping"))
@@ -34,16 +34,14 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long id, Date orderDate, Date shippingDate,
-                 Boolean status, String note, List<Product> products,
-                 List<Payment> payments, Shipping shipping) {
+    public Order(Long id, Date orderDate, Date shippingDate, Boolean status, String note, List<Product> products, Payment payment, Shipping shipping) {
         this.id = id;
         this.orderDate = orderDate;
         ShippingDate = shippingDate;
         this.status = status;
         this.note = note;
         this.products = products;
-        this.payments = payments;
+        this.payment = payment;
         this.shipping = shipping;
     }
 
@@ -95,12 +93,12 @@ public class Order {
         this.products = products;
     }
 
-    public List<Payment> getPayments() {
-        return payments;
+    public Payment getPayment() {
+        return payment;
     }
 
-    public void setPayments(List<Payment> payments) {
-        this.payments = payments;
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     public Shipping getShipping() {
