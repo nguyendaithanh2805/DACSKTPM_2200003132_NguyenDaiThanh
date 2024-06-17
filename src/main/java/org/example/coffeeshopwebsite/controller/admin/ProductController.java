@@ -33,7 +33,7 @@ public class ProductController {
     // Tao ham xu ly anh rieng de tranh vi pham nguyen tac "Single responsibility principle" trong SOLID
     private void handleImageUpload(@ModelAttribute("product") Product product, @RequestParam("imageFile") MultipartFile file) {
         String fileName = file.getOriginalFilename(); // Lay ten goc cua file tu HTML form
-        String uploadDir =  "D:\\workspace\\DACS\\coffee-shop-website\\src\\main\\resources\\static\\user\\images"; // Tao duong dan de luu tru hinh anh
+        String uploadDir =  "./src/main/resources/static/user/images/"; // Tao duong dan de luu tru hinh anh
         Path uploadPath = Paths.get(uploadDir);
         try {
             if (!(Files.exists(uploadPath))) {
