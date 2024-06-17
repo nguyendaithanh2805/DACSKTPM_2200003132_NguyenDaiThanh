@@ -52,12 +52,16 @@
                         <div class="col-md-6">
                             <table class="table table-striped-columns" >
                                 <tr>
+                                    <td><label for="catId">Category ID:</label></td>
+                                    <td><input type="text" id="catId" name="catId" th:field="*{id}" class="form-control-plaintext" readonly></td>
+                                </tr>
+                                <tr>
                                     <td><label for="productName">Category Name:</label></td>
                                     <td><input type="text" id="productName" name="productName" th:field="*{name}"></td>
                                 </tr>
                             </table>
                         </div>
-                        <button class="btn btn-success" type="submit">Add category</button>
+                        <button class="btn btn-success" type="submit">Update category</button>
                     </form>
                 </div>
             </div>

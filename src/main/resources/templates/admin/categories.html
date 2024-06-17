@@ -54,12 +54,17 @@
                             <tr>
                                 <th scope="col">ID</th>
                                 <th scope="col">Category Name</th>
+                                <th scope="col">Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr th:each="category : ${categories}">
                                 <td th:text="${category.getId()}"></td>
                                 <td th:text="${category.getName()}"></td>
+                                <td>
+                                    <a th:href="@{/admin/category-update(id = ${category.id})}"><button class="btn btn-primary">Update</button> </a>
+                                    <a th:href="@{/admin/category-delete(id = ${category.id})}"><button class="btn btn-danger">Delete</button> </a>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
