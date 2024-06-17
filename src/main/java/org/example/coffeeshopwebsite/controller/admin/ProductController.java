@@ -64,7 +64,7 @@ public class ProductController {
     }
 
     @PostMapping("/product-save")
-    public String saveProduct(@ModelAttribute("product") Product product, @RequestParam("imageFile") MultipartFile file, @RequestParam("category") Long categoryId, @RequestParam("productId") Long productId) {
+    public String saveProduct(@ModelAttribute("product") Product product, @RequestParam("imageFile") MultipartFile file, @RequestParam("category") Long categoryId, @RequestParam(value = "productId", required = false) Long productId) {
         handleImageUpload(product, file);
         productService.saveProduct(product, categoryId, productId);
         logger.info("Saved product successfully");
