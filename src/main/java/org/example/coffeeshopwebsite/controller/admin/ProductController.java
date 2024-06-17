@@ -1,6 +1,7 @@
 package org.example.coffeeshopwebsite.controller.admin;
 
 import org.example.coffeeshopwebsite.model.Product;
+import org.example.coffeeshopwebsite.service.CategoryService;
 import org.example.coffeeshopwebsite.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +22,12 @@ public class ProductController {
     private static final Logger logger = LoggerFactory.getLogger(ProductController.class);
     private final ProductService productService;
 
+    private final CategoryService categoryService;
+
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
+        this.categoryService = categoryService;
     }
 
     // Tao ham xu ly anh rieng de tranh vi pham nguyen tac "Single responsibility principle" trong SOLID
@@ -32,30 +36,32 @@ public class ProductController {
         String uploadDir =  "D:\\workspace\\DACS\\coffee-shop-website\\src\\main\\resources\\static\\user\\images"; // Tao duong dan de luu tru hinh anh
         Path uploadPath = Paths.get(uploadDir);
         try {
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
             assert fileName != null;
             Path filePath = uploadPath.resolve(fileName); // Ket hop duong dan uploadPath va fileName de tao nen path hoan chinh
-
-            if (!(Files.exists(filePath)))
-                Files.copy(file.getInputStream(), filePath);
+            Files.copy(file.getInputStream(), filePath);
             product.setImage(fileName);
             logger.info("Image saved successfully");
         }  catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Failed to save image", e);
         }
     }
 
     // CREATE
-    @GetMapping("/products-form")
+    @GetMapping("/product-form")
     public String createProduct(Model model) {
         model.addAttribute("product", new Product());
+        model.addAttribute("categories", categoryService.getAllCategories());
         logger.info("Access successfully");
         return "admin/productForm";
     }
 
-    @PostMapping("product-save")
-    public String saveProduct(@ModelAttribute("product") Product product, @RequestParam("imageFile") MultipartFile file) {
+    @PostMapping("/product-save")
+    public String saveProduct(@ModelAttribute("product") Product product, @RequestParam("imageFile") MultipartFile file, @RequestParam("category") Long categoryId) {
         handleImageUpload(product, file);
-        productService.saveProduct(product);
+        productService.saveProduct(product, categoryId);
         logger.info("Saved product successfully");
         return "redirect:/admin/products";
     }
@@ -70,7 +76,7 @@ public class ProductController {
     }
 
     // UPDATE
-    @GetMapping("/products-update")
+    @GetMapping("/product-update")
     public String updateProduct(Model model, @RequestParam Long id) {
         Product product = productService.getProductById(id);
         model.addAttribute("product", product);
@@ -78,7 +84,7 @@ public class ProductController {
     }
 
     // DELETE
-    @GetMapping("/products-delete")
+    @GetMapping("/product-delete")
     public String deleteProduct(@RequestParam Long id) {
       productService.deleteProductById(id);
       return "redirect:/admin/products";
