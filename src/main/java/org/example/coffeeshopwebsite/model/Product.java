@@ -28,11 +28,11 @@ public class Product {
     @Column(nullable = false)
     private Double sellingPrice;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Product_Category"))
     private Category category;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "tbl_product_cart",
             joinColumns = @JoinColumn(name = "product_id"),
@@ -48,7 +48,7 @@ public class Product {
     )
     private List<Order> orders;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Product_Account"))
     private Account account;
 
