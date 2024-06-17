@@ -1,6 +1,8 @@
 package org.example.coffeeshopwebsite.service;
 
+import org.example.coffeeshopwebsite.model.Category;
 import org.example.coffeeshopwebsite.model.Product;
+import org.example.coffeeshopwebsite.repository.CategoryRepository;
 import org.example.coffeeshopwebsite.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,10 +13,12 @@ import java.util.Optional;
 @Service
 public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -23,27 +27,28 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void saveProduct(Product product) {
+    public void saveProduct(Product product, Long categoryId) {
+        Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("Category not found for ID ::" + categoryId));
         if (product.getId() == null) {
             product.setName(product.getName());
             product.setDiscount(product.getDiscount());
             product.setImage(product.getImage());
             product.setQuantity(product.getQuantity());
             product.setSellingPrice(product.getSellingPrice());
-            product.setCategory(product.getCategory());
+            product.setCategory(category);
             product.setAccount(product.getAccount());
             productRepository.save(product);
         } else {
             Optional<Product> optionalProduct = productRepository.findById(product.getId());
             if (optionalProduct.isPresent()) {
-                Product existingProduct = getExistingProduct(product, optionalProduct);
+                Product existingProduct = getExistingProduct(product, optionalProduct, category);
                 productRepository.save(existingProduct);
             } else
                 throw new RuntimeException("Product not found for ID ::" + product.getId());
         }
     }
 
-    private Product getExistingProduct(Product product, Optional<Product> optionalProduct) {
+    private Product getExistingProduct(Product product, Optional<Product> optionalProduct, Category category) {
         Product existingProduct = optionalProduct.get();
         existingProduct.setName(product.getName());
         existingProduct.setDiscount(product.getDiscount());
@@ -51,7 +56,7 @@ public class ProductServiceImpl implements ProductService{
         existingProduct.setImage(product.getImage());
         existingProduct.setQuantity(product.getQuantity());
         existingProduct.setSellingPrice(product.getSellingPrice() - product.getDiscount());
-        existingProduct.setCategory(product.getCategory());
+        existingProduct.setCategory(category);
         existingProduct.setAccount(product.getAccount());
         return existingProduct;
     }

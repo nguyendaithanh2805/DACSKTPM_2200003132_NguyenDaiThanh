@@ -50,6 +50,10 @@
                 <form th:action="@{/admin/products-save}" th:object="${product}" th:method="POST" enctype="multipart/form-data">
                     <table class="table table-striped-columns" >
                         <tr>
+                            <td><label for="productId">Product ID:</label></td>
+                            <td><input type="text" id="productId" name="productId" th:value="${product.getId()}" class="form-control-plaintext" readonly></td>
+                        </tr>
+                        <tr>
                             <td><label for="productName">Product Name:</label></td>
                             <td><input type="text" id="productName" name="productName" th:field="*{name}"></td>
                         </tr>

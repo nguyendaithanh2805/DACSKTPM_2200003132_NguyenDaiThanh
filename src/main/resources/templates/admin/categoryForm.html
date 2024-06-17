@@ -48,12 +48,12 @@
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
-                    <form th:action="@{/admin/category-save}" th:object="${categories}" th:method="POST">
+                    <form th:action="@{/admin/category-save}" th:object="${category}" th:method="POST">
                         <div class="col-md-6">
                             <table class="table table-striped-columns" >
                                 <tr>
                                     <td><label for="productName">Category Name:</label></td>
-                                    <td><input type="text" id="productName" name="productName" th:field="*{name}"></td>
+                                    <td><input type="text" id="productName" name="productName" th:field="*{name}" required></td>
                                 </tr>
                             </table>
                         </div>

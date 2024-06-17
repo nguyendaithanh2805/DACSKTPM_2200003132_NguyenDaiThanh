@@ -7,10 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,12 +25,12 @@ public class CategoryController {
     // CREATE
     @GetMapping("/category-form")
     public String index(Model model) {
-        model.addAttribute("categories", new Category());
+        model.addAttribute("category", new Category());
         return "admin/categoryForm";
     }
 
     @PostMapping("/category-save")
-    public String saveCategory(@ModelAttribute("categories") Category category) {
+    public String saveCategory(@ModelAttribute("category") Category category) {
         categoryService.saveCategory(category);
         logger.info("Category saved successfully");
         return "redirect:/admin/categories";
@@ -45,5 +42,21 @@ public class CategoryController {
         List<Category> categories = categoryService.getAllCategories();
         model.addAttribute("categories", categories);
         return "admin/categories";
+    }
+
+    //UPDATE
+    @GetMapping("/category-update")
+    public String updateCategory(Model model, @RequestParam Long id) {
+        Category category = categoryService.getCategoryById(id);
+        model.addAttribute("category", category);
+        return "admin/updateCategoryForm";
+    }
+
+    //DELETE
+    @GetMapping("/category-delete")
+    public String deleteCategory(@RequestParam Long id) {
+        categoryService.deleteCategoryById(id);
+        logger.info("Category deleted successfully");
+        return "redirect:/admin/categories";
     }
 }
