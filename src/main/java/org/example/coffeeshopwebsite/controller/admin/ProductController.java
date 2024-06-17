@@ -36,14 +36,19 @@ public class ProductController {
         String uploadDir =  "D:\\workspace\\DACS\\coffee-shop-website\\src\\main\\resources\\static\\user\\images"; // Tao duong dan de luu tru hinh anh
         Path uploadPath = Paths.get(uploadDir);
         try {
-            if (!Files.exists(uploadPath)) {
+            if (!(Files.exists(uploadPath))) {
                 Files.createDirectories(uploadPath);
             }
             assert fileName != null;
             Path filePath = uploadPath.resolve(fileName); // Ket hop duong dan uploadPath va fileName de tao nen path hoan chinh
-            Files.copy(file.getInputStream(), filePath);
-            product.setImage(fileName);
-            logger.info("Image saved successfully");
+            if (!(Files.exists(filePath))) {
+                Files.copy(file.getInputStream(), filePath);
+                product.setImage(fileName);
+                logger.info("Image saved successfully");
+            } else {
+                product.setImage(fileName);
+                logger.warn("File name already exists!");
+            }
         }  catch (Exception e) {
             logger.error("Failed to save image", e);
         }
@@ -59,9 +64,9 @@ public class ProductController {
     }
 
     @PostMapping("/product-save")
-    public String saveProduct(@ModelAttribute("product") Product product, @RequestParam("imageFile") MultipartFile file, @RequestParam("category") Long categoryId) {
+    public String saveProduct(@ModelAttribute("product") Product product, @RequestParam("imageFile") MultipartFile file, @RequestParam("category") Long categoryId, @RequestParam("productId") Long productId) {
         handleImageUpload(product, file);
-        productService.saveProduct(product, categoryId);
+        productService.saveProduct(product, categoryId, productId);
         logger.info("Saved product successfully");
         return "redirect:/admin/products";
     }
@@ -79,6 +84,7 @@ public class ProductController {
     @GetMapping("/product-update")
     public String updateProduct(Model model, @RequestParam Long id) {
         Product product = productService.getProductById(id);
+        model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("product", product);
         return "admin/updateProductForm";
     }
