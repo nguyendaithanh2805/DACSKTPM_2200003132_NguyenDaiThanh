@@ -6,6 +6,7 @@ import org.example.coffeeshopwebsite.repository.CategoryRepository;
 import org.example.coffeeshopwebsite.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,9 +28,9 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void saveProduct(Product product, Long categoryId) {
+    public void saveProduct(Product product, Long categoryId, Long productId) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("Category not found for ID ::" + categoryId));
-        if (product.getId() == null) {
+        if (productId == null) {
             product.setName(product.getName());
             product.setDiscount(product.getDiscount());
             product.setImage(product.getImage());
@@ -39,7 +40,7 @@ public class ProductServiceImpl implements ProductService{
             product.setAccount(product.getAccount());
             productRepository.save(product);
         } else {
-            Optional<Product> optionalProduct = productRepository.findById(product.getId());
+            Optional<Product> optionalProduct = productRepository.findById(productId);
             if (optionalProduct.isPresent()) {
                 Product existingProduct = getExistingProduct(product, optionalProduct, category);
                 productRepository.save(existingProduct);
@@ -67,6 +68,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    @Transactional
     public void deleteProductById(Long id) {
         productRepository.deleteById(id);
     }
