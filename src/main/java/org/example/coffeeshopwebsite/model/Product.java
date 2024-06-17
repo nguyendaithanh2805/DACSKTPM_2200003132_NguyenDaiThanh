@@ -28,7 +28,7 @@ public class Product {
     @Column(nullable = false)
     private Double sellingPrice;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Product_Category"))
     private Category category;
 
@@ -48,7 +48,7 @@ public class Product {
     )
     private List<Order> orders;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "account_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Product_Account"))
     private Account account;
 
