@@ -1,8 +1,6 @@
 package org.example.coffeeshopwebsite.controller.admin;
 
-import org.example.coffeeshopwebsite.model.Role;
 import org.example.coffeeshopwebsite.model.User;
-import org.example.coffeeshopwebsite.model.UserRole;
 import org.example.coffeeshopwebsite.service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
