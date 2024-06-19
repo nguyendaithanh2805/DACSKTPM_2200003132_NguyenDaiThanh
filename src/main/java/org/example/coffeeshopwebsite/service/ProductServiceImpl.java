@@ -37,7 +37,7 @@ public class ProductServiceImpl implements ProductService{
             product.setQuantity(product.getQuantity());
             product.setSellingPrice(product.getSellingPrice());
             product.setCategory(category);
-            product.setAccount(product.getAccount());
+            product.setUser(product.getUser());
             productRepository.save(product);
         } else {
             Optional<Product> optionalProduct = productRepository.findById(productId);
@@ -58,7 +58,7 @@ public class ProductServiceImpl implements ProductService{
         existingProduct.setQuantity(product.getQuantity());
         existingProduct.setSellingPrice(product.getSellingPrice() - product.getDiscount());
         existingProduct.setCategory(category);
-        existingProduct.setAccount(product.getAccount());
+        existingProduct.setUser(product.getUser());
         return existingProduct;
     }
 
