@@ -49,8 +49,8 @@ public class Product {
     private List<Order> orders;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "account_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Product_Account"))
-    private Account account;
+    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Product_User"))
+    private User user;
 
     public Product() {
     }
@@ -58,7 +58,7 @@ public class Product {
     public Product(Long id, String name, String description,
                    Double discount, String image, Integer quantity,
                    Double sellingPrice, Category category,
-                   List<Cart> carts, List<Order> orders, Account account) {
+                   List<Cart> carts, List<Order> orders, User user) {
         Id = id;
         this.name = name;
         this.description = description;
@@ -69,7 +69,7 @@ public class Product {
         this.category = category;
         this.carts = carts;
         this.orders = orders;
-        this.account = account;
+        this.user = user;
     }
 
     public Long getId() {
@@ -152,11 +152,11 @@ public class Product {
         this.orders = orders;
     }
 
-    public Account getAccount() {
-        return account;
+    public User getUser() {
+        return user;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

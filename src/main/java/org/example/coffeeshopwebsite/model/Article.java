@@ -24,19 +24,19 @@ public class Article {
     private String image;
 
     @ManyToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Article_Account"))
-    private Account account;
+    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Article_user"))
+    private User user;
 
     public Article() {
     }
 
-    public Article(Long id, String name, String description, Boolean status, String image, Account account) {
+    public Article(Long id, String name, String description, Boolean status, String image, User user) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
         this.image = image;
-        this.account = account;
+        this.user = user;
     }
 
     public Long getId() {
@@ -79,11 +79,11 @@ public class Article {
         this.image = image;
     }
 
-    public Account getAccount() {
-        return account;
+    public User getUser() {
+        return user;
     }
 
-    public void setAccount(Account account) {
-        this.account = account;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
