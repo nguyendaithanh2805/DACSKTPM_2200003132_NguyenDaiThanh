@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService{
     public void saveUser(User user) {
         User existingUser = userRepository.findByUsername(user.getUsername());
         if (existingUser != null)
-            throw new IllegalArgumentException("User with username " + user.getUsername() + "already exists");
+            throw new IllegalArgumentException("User with username " + user.getUsername() + " already exists.");
         user.setPassword(bCryptPasswordEncoder.encode(user.getUsername()));
         userRepository.save(user);
         logger.info("Saved user successfully");

@@ -38,6 +38,7 @@
                     </div>
                     <!-- /.col -->
                 </div>
+                <p th:if="${error}" th:text="${error}" style="color: red;">Username already exists</p>
             </form>
             <div class="social-auth-links text-center mb-3">
                 <p>- OR -</p>

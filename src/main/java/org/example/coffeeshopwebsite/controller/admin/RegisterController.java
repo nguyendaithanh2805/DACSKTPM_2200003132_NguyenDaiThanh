@@ -35,12 +35,18 @@ public class RegisterController {
     }
 
     @PostMapping("/register-save")
-    public String saveAccount(@ModelAttribute("user") User user) {
-        userService.saveUser(user);
-        Role role = new Role();
-        roleService.saveRole(role, user);
-        UserRole userRole = new UserRole();
-        userRoleService.saveUserRole(userRole, user,role);
-        return "redirect:/admin/login";
+    public String saveAccount(@ModelAttribute("user") User user, Model model) {
+        try
+        {
+            userService.saveUser(user);
+            Role role = new Role();
+            roleService.saveRole(role, user);
+            UserRole userRole = new UserRole();
+            userRoleService.saveUserRole(userRole, user,role);
+            return "redirect:/admin/login";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            return "admin/register";
+        }
     }
 }
