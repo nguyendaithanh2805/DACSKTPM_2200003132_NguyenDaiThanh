@@ -1,11 +1,7 @@
 package org.example.coffeeshopwebsite.controller.admin;
 
-import org.example.coffeeshopwebsite.model.Role;
 import org.example.coffeeshopwebsite.model.User;
-import org.example.coffeeshopwebsite.model.UserRole;
-import org.example.coffeeshopwebsite.service.RoleService;
-import org.example.coffeeshopwebsite.service.UserRoleService;
-import org.example.coffeeshopwebsite.service.UserService;
+import org.example.coffeeshopwebsite.service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,15 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/admin")
 public class RegisterController {
-    private final UserService userService;
-    private final RoleService roleService;
-    private final UserRoleService userRoleService;
+    private final RegisterService registerService;
 
     @Autowired
-    public RegisterController(UserService userService, RoleService roleService, UserRoleService userRoleService) {
-        this.userService = userService;
-        this.roleService = roleService;
-        this.userRoleService = userRoleService;
+    public RegisterController(RegisterService registerService) {
+        this.registerService = registerService;
     }
 
     @GetMapping("/register")
@@ -38,11 +30,7 @@ public class RegisterController {
     public String saveAccount(@ModelAttribute("user") User user, Model model) {
         try
         {
-            userService.saveUser(user);
-            Role role = new Role();
-            roleService.saveRole(role, user);
-            UserRole userRole = new UserRole();
-            userRoleService.saveUserRole(userRole, user,role);
+            registerService.saveRegisterAccount(user);
             return "redirect:/admin/login";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
