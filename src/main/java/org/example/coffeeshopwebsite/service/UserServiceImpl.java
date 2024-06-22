@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService{
     private final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService{
         User existingUser = userRepository.findByUsername(user.getUsername());
         if (existingUser != null)
             throw new IllegalArgumentException("User with username " + user.getUsername() + " already exists.");
-        user.setPassword(bCryptPasswordEncoder.encode(user.getUsername()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         logger.info("Saved user successfully");
     }
