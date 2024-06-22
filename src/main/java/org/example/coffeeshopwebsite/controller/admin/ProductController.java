@@ -2,6 +2,7 @@ package org.example.coffeeshopwebsite.controller.admin;
 
 import org.example.coffeeshopwebsite.model.Product;
 import org.example.coffeeshopwebsite.service.CategoryService;
+import org.example.coffeeshopwebsite.service.FileUploadService;
 import org.example.coffeeshopwebsite.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,35 +24,13 @@ public class ProductController {
     private final ProductService productService;
 
     private final CategoryService categoryService;
+    private final FileUploadService fileUploadService;
 
     @Autowired
-    public ProductController(ProductService productService, CategoryService categoryService) {
+    public ProductController(ProductService productService, CategoryService categoryService, FileUploadService fileUploadService) {
         this.productService = productService;
         this.categoryService = categoryService;
-    }
-
-    // Tao ham xu ly anh rieng de tranh vi pham nguyen tac "Single responsibility principle" trong SOLID
-    private void handleImageUpload(@ModelAttribute("product") Product product, @RequestParam("imageFile") MultipartFile file) {
-        String fileName = file.getOriginalFilename(); // Lay ten goc cua file tu HTML form
-        String uploadDir =  "./src/main/resources/static/user/images/"; // Tao duong dan de luu tru hinh anh
-        Path uploadPath = Paths.get(uploadDir);
-        try {
-            if (!(Files.exists(uploadPath))) {
-                Files.createDirectories(uploadPath);
-            }
-            assert fileName != null;
-            Path filePath = uploadPath.resolve(fileName); // Ket hop duong dan uploadPath va fileName de tao nen path hoan chinh
-            if (!(Files.exists(filePath))) {
-                Files.copy(file.getInputStream(), filePath);
-                product.setImage(fileName);
-                logger.info("Image saved successfully");
-            } else {
-                product.setImage(fileName);
-                logger.warn("File name already exists!");
-            }
-        }  catch (Exception e) {
-            logger.error("Failed to save image", e);
-        }
+        this.fileUploadService = fileUploadService;
     }
 
     // CREATE
@@ -65,7 +44,7 @@ public class ProductController {
 
     @PostMapping("/product-save")
     public String saveProduct(@ModelAttribute("product") Product product, @RequestParam("imageFile") MultipartFile file, @RequestParam("category") Long categoryId, @RequestParam(value = "productId", required = false) Long productId) {
-        handleImageUpload(product, file);
+        fileUploadService.handleImageUpload(product, file);
         productService.saveProduct(product, categoryId, productId);
         logger.info("Saved product successfully");
         return "redirect:/admin/products";
