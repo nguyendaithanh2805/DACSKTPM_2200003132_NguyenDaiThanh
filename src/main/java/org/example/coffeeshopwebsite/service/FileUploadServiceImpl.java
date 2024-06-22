@@ -30,14 +30,13 @@ public class FileUploadServiceImpl implements FileUploadService{
 
             if (!Files.exists(filePath)) {
                 Files.copy(file.getInputStream(), filePath);
-
-                /*Neu Object entity la instance cua Product hoac Article thi ep kieu theo instance do*/
-                if (entity instanceof Product)
-                    ((Product) entity).setImage(fileName);
-                else if (entity instanceof Article)
-                    ((Article) entity).setImage(fileName);
-                logger.info("Image saved successfully");
             }
+            /*Neu Object entity la instance cua Product hoac Article thi ep kieu theo instance do*/
+            if (entity instanceof Product)
+                ((Product) entity).setImage(fileName);
+            else if (entity instanceof Article)
+                ((Article) entity).setImage(fileName);
+            logger.info("Image saved successfully");
         } catch (Exception e) {
             logger.error("Failed to save image", e);
         }
