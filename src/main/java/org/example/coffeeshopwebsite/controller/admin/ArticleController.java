@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -57,6 +58,17 @@ public class ArticleController {
     }
 
     // UPDATE
+    // Update article
+    @GetMapping("/article-update")
+    public String showFormForUpdate(@RequestParam Long id, Model model) {
+        Article article = articleService.getArticleById(id);
+        List<Boolean> statusOptions = Arrays.asList(false, true);
+        model.addAttribute("statusOptions", statusOptions);
+        model.addAttribute("article", article);
+        return "admin/updateArticleForm";
+    }
+
+    // Update status
     @PostMapping("update-status")
     public String updateArticleStatus(@RequestParam Long id, @RequestParam Boolean status, @RequestParam(value = "articleId", required = false) Long articleId) {
         Article article = articleService.getArticleById(id);
@@ -66,4 +78,9 @@ public class ArticleController {
     }
 
     // DELETE
+    @GetMapping("/article-delete")
+    public String deleteArticle(@RequestParam Long id) {
+        articleService.deleteArticleById(id);
+        return "redirect:/admin/articles";
+    }
 }

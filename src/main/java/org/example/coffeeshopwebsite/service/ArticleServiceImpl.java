@@ -49,4 +49,9 @@ public class ArticleServiceImpl implements ArticleService{
     public Article getArticleById(Long id) {
         return articleRepository.findById(id).orElseThrow(() -> new RuntimeException("Article not found for ID ::" + id));
     }
+
+    @Override
+    public void deleteArticleById(Long id) {
+        articleRepository.deleteById(id);
+    }
 }
