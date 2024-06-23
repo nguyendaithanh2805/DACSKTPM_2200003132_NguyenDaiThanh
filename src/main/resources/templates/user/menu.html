@@ -30,7 +30,7 @@
                 <img th:src="@{../user/images/__${product.getImage()}__}" alt="">
             </div>
             <div class="content">
-                <h3 th:text="${product.getName()()}"></h3>
+                <h3 th:text="${product.getName()}"></h3>
                 <h5 style="font-size: 20px"> Quantity: <span style="font-size: 20px" th:text="${product.getQuantity()}"></span> </h5>
                 <div class="flex" style=" display: flex; justify-content: center; flex-direction: row-reverse; align-items: baseline">
                     <div class="price" style="text-decoration: line-through; font-size: 15px; margin-left: 5px" th:if="${product.getDiscount() != 0.0}" th:text="${product.getSellingPrice()}"></div>
