@@ -66,4 +66,9 @@ public class ArticleController {
     }
 
     // DELETE
+    @GetMapping("/article-delete")
+    public String deleteArticle(@RequestParam Long id) {
+        articleService.deleteArticleById(id);
+        return "redirect:/admin/articles";
+    }
 }
