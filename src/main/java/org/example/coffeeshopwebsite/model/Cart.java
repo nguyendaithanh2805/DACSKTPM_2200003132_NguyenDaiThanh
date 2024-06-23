@@ -18,13 +18,18 @@ public class Cart {
     @ManyToMany(mappedBy = "carts", cascade = CascadeType.ALL)
     private List<Product> products;
 
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Cart_User"))
+    private User user;
+
     public Cart() {
     }
 
-    public Cart(Long id, Double totalBill, List<Product> products) {
+    public Cart(Long id, Double totalBill, List<Product> products, User user) {
         this.id = id;
         this.totalBill = totalBill;
         this.products = products;
+        this.user = user;
     }
 
     public Long getId() {
@@ -49,5 +54,13 @@ public class Cart {
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
