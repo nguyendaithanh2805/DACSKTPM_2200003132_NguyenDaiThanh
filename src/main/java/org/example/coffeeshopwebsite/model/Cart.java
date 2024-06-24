@@ -2,6 +2,7 @@ package org.example.coffeeshopwebsite.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,10 +16,10 @@ public class Cart {
     @Column(name = "total_bill",nullable = false)
     private Double totalBill;
 
-    @ManyToMany(mappedBy = "carts", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart")
     private List<Product> products;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Cart_User"))
     private User user;
 

@@ -32,14 +32,6 @@ public class Product {
     @JoinColumn(name = "category_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Product_Category"))
     private Category category;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "tbl_product_cart",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "cart_id")
-    )
-    private List<Cart> carts;
-
     @ManyToMany
     @JoinTable(
             name = "tbl_order_detail",
@@ -55,10 +47,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(Long id, String name, String description,
-                   Double discount, String image, Integer quantity,
-                   Double sellingPrice, Category category,
-                   List<Cart> carts, List<Order> orders, User user) {
+    public Product(Long id, String name, String description, Double discount, String image, Integer quantity, Double sellingPrice, Category category, Cart cart, List<Order> orders, User user) {
         Id = id;
         this.name = name;
         this.description = description;
@@ -67,7 +56,7 @@ public class Product {
         this.quantity = quantity;
         this.sellingPrice = sellingPrice;
         this.category = category;
-        this.carts = carts;
+        this.cart = cart;
         this.orders = orders;
         this.user = user;
     }
@@ -136,12 +125,12 @@ public class Product {
         this.category = category;
     }
 
-    public List<Cart> getCarts() {
-        return carts;
+    public Cart getCart() {
+        return cart;
     }
 
-    public void setCarts(List<Cart> carts) {
-        this.carts = carts;
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 
     public List<Order> getOrders() {
