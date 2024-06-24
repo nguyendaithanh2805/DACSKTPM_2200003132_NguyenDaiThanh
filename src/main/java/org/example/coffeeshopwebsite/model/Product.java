@@ -47,7 +47,7 @@ public class Product {
     public Product() {
     }
 
-    public Product(Long id, String name, String description, Double discount, String image, Integer quantity, Double sellingPrice, Category category, Cart cart, List<Order> orders, User user) {
+    public Product(Long id, String name, String description, Double discount, String image, Integer quantity, Double sellingPrice, Category category, List<Order> orders, User user) {
         Id = id;
         this.name = name;
         this.description = description;
@@ -56,7 +56,6 @@ public class Product {
         this.quantity = quantity;
         this.sellingPrice = sellingPrice;
         this.category = category;
-        this.cart = cart;
         this.orders = orders;
         this.user = user;
     }
@@ -123,14 +122,6 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
     }
 
     public List<Order> getOrders() {
