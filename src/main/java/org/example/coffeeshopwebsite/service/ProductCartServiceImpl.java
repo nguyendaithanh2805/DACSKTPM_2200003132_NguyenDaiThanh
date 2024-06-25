@@ -20,10 +20,11 @@ public class ProductCartServiceImpl implements ProductCartService {
     }
 
     @Override
-    public void saveProductCart(Cart cart, Product product) {
+    public void saveProductCart(Cart cart, Product product, Integer quantity) {
         ProductCart productCart = new ProductCart();
         productCart.setCart(cart);
         productCart.setProduct(product);
+        productCart.setQuantity(quantity);
         productCartRepository.save(productCart);
         logger.info("Saved product cart successfully");
     }
