@@ -19,6 +19,9 @@
         height: 25px;
         text-align: center;
     }
+    .icons {
+        margin-top: 5px;
+    }
 </style>
 <body>
 
@@ -50,8 +53,8 @@
                 <h3 th:text="${product.getName()}"></h3>
                 <h5 style="font-size: 20px"> Quantity: <span style="font-size: 20px" th:text="${product.getQuantity()}"></span> </h5>
                 <div class="flex" style=" display: flex; justify-content: center; flex-direction: row-reverse; align-items: baseline">
-                    <div class="price" style="text-decoration: line-through; font-size: 15px; margin-left: 5px" th:if="${product.getDiscount() != 0.0}" th:text="${product.getSellingPrice()}"></div>
-                    <div class="price" style="color: red" th:text="${product.getSellingPrice() - product.getDiscount()}"></div>
+                    <div class="price" style="text-decoration: line-through; font-size: 15px; margin-left: 5px" th:if="${product.getDiscount() != 0.0}" th:text="${product.getSellingPrice() + product.getDiscount()}"></div>
+                    <div class="price" style="color: red" th:text="${product.getSellingPrice()}"></div>
                 </div>
             </div>
             <div class="icons">
@@ -62,8 +65,11 @@
                         </label>
                         <button class="quantity-btn" onclick="incrementQuantity(this)">+</button>
                     </div>
-                <div class="icons">
-                    <a href="#" class="fas fa-shopping-cart" th:data-id="${product.getId()}" onclick="addToCart(this)"></a>
+                <div class="icons" th:if="${product.getQuantity() > 0}">
+                    <a class="fas fa-shopping-cart" th:data-id="${product.getId()}" onclick="addToCart(this)"></a>
+                </div>
+                <div class="icons" th:if="${product.getQuantity() <= 0}">
+                    <p style="font-size: 20px; color: red;">Sold out</p>
                 </div>
             </div>
         </div>
@@ -130,17 +136,29 @@
         const quantityInput = element.closest('.box').querySelector('.quantity-input');
         const quantity = quantityInput.value;
 
-        fetch('/cart-add?productId=' + productId + '&quantity=' + quantity, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
+        // Kiem tra nguoi dung da dang nhap hay chua
+        fetch('/user', { // Thay thế '/cart-add' bằng '/user' để kiểm tra đăng nhập
+            credentials: 'same-origin' // Bảo đảm cookie được gửi đi nếu cần thiết
         })
             .then(response => {
-                if (response.ok) {
-                    window.location.href = '/menu';
+                if (response.redirected && response.url.includes('/login')) {
+                    window.location.href = '/admin/login';
                 } else {
-                    alert('Failed to add product to cart');
+                    // Nếu đã đăng nhập, tiếp tục gọi API /cart-add
+                    fetch('/cart-add?productId=' + productId + '&quantity=' + quantity, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        }
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                window.location.href = '/menu';
+                            } else {
+                                alert('Failed to add product to cart');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
                 }
             })
             .catch(error => console.error('Error:', error));
