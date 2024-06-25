@@ -10,6 +10,9 @@ public class ProductCart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
+    private Integer quantity;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "product_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_ProductCart_Product"))
     private Product product;
@@ -21,8 +24,9 @@ public class ProductCart {
     public ProductCart() {
     }
 
-    public ProductCart(Long id, Product product, Cart cart) {
+    public ProductCart(Long id, Integer quantity, Product product, Cart cart) {
         this.id = id;
+        this.quantity = quantity;
         this.product = product;
         this.cart = cart;
     }
@@ -33,6 +37,14 @@ public class ProductCart {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public Product getProduct() {

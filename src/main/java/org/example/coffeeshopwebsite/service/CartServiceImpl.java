@@ -39,14 +39,13 @@ public class CartServiceImpl implements CartService{
             Product product = optionalProduct.get();
             Cart cart = new Cart();
             cart.setUser(user);
-            cart.setQuantity(quantity);
             cart.setTotalBill(product.getSellingPrice() * quantity);
             product.setQuantity(product.getQuantity() - quantity);
             cartRepository.save(cart);
             logger.info("Cart save successfully");
             productRepository.save(product);
             logger.info("Product save successfully");
-            productCartService.saveProductCart(cart, product);
+            productCartService.saveProductCart(cart, product, quantity);
         }
     }
 
