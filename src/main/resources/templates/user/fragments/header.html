@@ -12,7 +12,7 @@
     <div class="icons">
         <div class="fas fa-bars" id="menu-btn"></div>
         <div class="fas fa-search" id="search-btn"></div>
-        <div class="fas fa-shopping-cart" id="cart-btn"></div>
+        <a th:href="@{/cart-view}"><div class="fas fa-shopping-cart" id="cart-btn"></div></a>
         <a th:href="@{/admin/login}" sec:authorize="!isAuthenticated()">
             <div class="fas fa-user" id="login-btn"></div>
         </a>
