@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -24,15 +25,15 @@ public class CartController {
     }
 
     @PostMapping("/cart-add")
-    public String addProductToCart(@RequestParam Long productId, HttpSession session) {
-            cartService.addProductToCart(productId, session);
-            return "redirect:/cart-view";
+    public String addProductToCart(@RequestParam Integer quantity, @RequestParam Long productId) {
+            cartService.addProductToCart(quantity, productId);
+            return "redirect:/menu";
     }
 
-    @GetMapping("/cart-view")
-    public String showCart(HttpSession session, Model model) {
-        List<Product> cartItems = cartService.getCartItems(session);
-        model.addAttribute("cartItems", cartItems);
-        return "user/cart";
-    }
+//    @GetMapping("/cart-view")
+//    public String showCart(HttpSession session, Model model) {
+//        List<Product> cartItems = cartService.getCartItems(session);
+//        model.addAttribute("cartItems", cartItems);
+//        return "user/cart";
+//    }
 }
