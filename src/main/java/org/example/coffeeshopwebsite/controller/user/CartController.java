@@ -1,6 +1,7 @@
 package org.example.coffeeshopwebsite.controller.user;
 
 import jakarta.servlet.http.HttpSession;
+import org.example.coffeeshopwebsite.model.Cart;
 import org.example.coffeeshopwebsite.model.Product;
 import org.example.coffeeshopwebsite.model.User;
 import org.example.coffeeshopwebsite.service.CartService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -26,14 +28,14 @@ public class CartController {
 
     @PostMapping("/cart-add")
     public String addProductToCart(@RequestParam Integer quantity, @RequestParam Long productId) {
-            cartService.addProductToCart(quantity, productId);
-            return "redirect:/menu";
+        cartService.addProductToCart(quantity, productId);
+        return "redirect:/menu";
     }
 
-//    @GetMapping("/cart-view")
-//    public String showCart(HttpSession session, Model model) {
-//        List<Product> cartItems = cartService.getCartItems(session);
-//        model.addAttribute("cartItems", cartItems);
-//        return "user/cart";
-//    }
+    @GetMapping("/cart-view")
+    public String showCart(Model model) {
+        List<Cart> carts = cartService.getCartByUser();
+        model.addAttribute("carts", carts);
+        return "user/cart";
+    }
 }
