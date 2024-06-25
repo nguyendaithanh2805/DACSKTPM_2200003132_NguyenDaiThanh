@@ -3,6 +3,23 @@
 <head th:replace="~{user/fragments/head.html :: head}">
     <title></title>
 </head>
+<style>
+    .table-striped {
+        font-size: 20px;
+    }
+    th, td{
+        padding: 20px;
+        border: 1px solid #ccc;
+    }
+    th {
+        text-align: center;
+        background-color: #f2f2f2;
+    }
+    td {
+        text-align: center;
+    }
+
+</style>
 <body>
 
 <!-- header section starts -->
@@ -24,24 +41,30 @@
 <section class="menu">
 
     <div class="box-container">
-        <table class="table table-striped" th:each="cartItem : ${cartItems}">
-           <thead>
-                <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Product name</th>
-                    <th scope="col">Product image</th>
-                    <th scope="col">Total bill</th>
-                </tr>
-           </thead>
-            <tbody>
-                <tr>
-                    <th scope="row" th:text="${cartItem.getId()}"></th>
-                    <td th:text="${cartItem.getName()}"></td>
-                    <td th:text="${cartItem.getImage()}"></td>
-                    <td th:text="${cartItem.getQuantity()}"></td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="container">
+            <div class="row" >
+                <div class="col-sm-12 col-md-6 col-lg-6" th:each="cartItem : ${carts}">
+                    <table class="table table-striped">
+                       <thead>
+                            <tr>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Total bill</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                       </thead>
+                        <tbody>
+                            <tr>
+                                <td th:text="${cartItem.getQuantity()}"></td>
+                                <td th:text="${cartItem.getTotalBill()}"></td>
+                                <td>
+                                    <a th:href="@{/admin/cart-delete(id = ${cartItem.id})}"><button class="btn btn-danger">Delete</button> </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
 </section>

@@ -44,16 +44,13 @@ public class Product {
     @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Product_User"))
     private User user;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "tbl_Cart_Product",
-            joinColumns = @JoinColumn(name = "cart_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Cart> carts;
+    @OneToMany(mappedBy = "product")
+    private List<ProductCart> productCarts;
+
     public Product() {
     }
 
-    public Product(Long id, String name, String description, Double discount, String image, Integer quantity, Double sellingPrice, Category category, List<Order> orders, User user, List<Cart> carts) {
+    public Product(Long id, String name, String description, Double discount, String image, Integer quantity, Double sellingPrice, Category category, List<Order> orders, User user, List<ProductCart> productCarts) {
         Id = id;
         this.name = name;
         this.description = description;
@@ -64,7 +61,7 @@ public class Product {
         this.category = category;
         this.orders = orders;
         this.user = user;
-        this.carts = carts;
+        this.productCarts = productCarts;
     }
 
     public Long getId() {
@@ -147,11 +144,11 @@ public class Product {
         this.user = user;
     }
 
-    public List<Cart> getCarts() {
-        return carts;
+    public List<ProductCart> getProductCarts() {
+        return productCarts;
     }
 
-    public void setCarts(List<Cart> carts) {
-        this.carts = carts;
+    public void setProductCarts(List<ProductCart> productCarts) {
+        this.productCarts = productCarts;
     }
 }
