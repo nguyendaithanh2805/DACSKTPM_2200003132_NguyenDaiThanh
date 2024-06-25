@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -49,5 +50,11 @@ public class CartServiceImpl implements CartService{
             productRepository.save(product);
             logger.info("Product save successfully");
         }
+    }
+
+    @Override
+    public List<Cart> getCartByUser() {
+        User user = userService.getCurrentUser();
+        return cartRepository.findByUser(user);
     }
 }
