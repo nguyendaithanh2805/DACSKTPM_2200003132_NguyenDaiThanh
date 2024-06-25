@@ -16,7 +16,10 @@ public class Cart {
     @Column(name = "total_bill",nullable = false)
     private Double totalBill;
 
-    @OneToMany(mappedBy = "cart")
+    @Column(nullable = false)
+    private Integer quantity;
+
+    @ManyToMany(mappedBy = "carts", fetch = FetchType.EAGER)
     private List<Product> products;
 
     @ManyToOne
@@ -26,9 +29,10 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(Long id, Double totalBill, List<Product> products, User user) {
+    public Cart(Long id, Double totalBill, Integer quantity, List<Product> products, User user) {
         this.id = id;
         this.totalBill = totalBill;
+        this.quantity = quantity;
         this.products = products;
         this.user = user;
     }
@@ -47,6 +51,14 @@ public class Cart {
 
     public void setTotalBill(Double totalBill) {
         this.totalBill = totalBill;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public List<Product> getProducts() {
