@@ -26,18 +26,18 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<UserRole> userRoles;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Cart cart;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Cart> carts;
 
     public User() {}
 
-    public User(Long id, String username, String password, List<Product> products, Set<UserRole> userRoles, Cart cart) {
+    public User(Long id, String username, String password, List<Product> products, Set<UserRole> userRoles, List<Cart> carts) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.products = products;
         this.userRoles = userRoles;
-        this.cart = cart;
+        this.carts = carts;
     }
 
     public Long getId() {
@@ -80,11 +80,11 @@ public class User {
         this.userRoles = userRoles;
     }
 
-    public Cart getCart() {
-        return cart;
+    public List<Cart> getCarts() {
+        return carts;
     }
 
-    public void setCart(Cart cart) {
-        this.cart = cart;
+    public void setCarts(List<Cart> carts) {
+        this.carts = carts;
     }
 }

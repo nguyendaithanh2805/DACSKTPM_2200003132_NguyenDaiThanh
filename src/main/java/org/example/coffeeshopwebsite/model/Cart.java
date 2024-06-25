@@ -2,6 +2,7 @@ package org.example.coffeeshopwebsite.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,19 +16,23 @@ public class Cart {
     @Column(name = "total_bill",nullable = false)
     private Double totalBill;
 
-    @ManyToMany(mappedBy = "carts", cascade = CascadeType.ALL)
+    @Column(nullable = false)
+    private Integer quantity;
+
+    @ManyToMany(mappedBy = "carts", fetch = FetchType.EAGER)
     private List<Product> products;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Cart_User"))
     private User user;
 
     public Cart() {
     }
 
-    public Cart(Long id, Double totalBill, List<Product> products, User user) {
+    public Cart(Long id, Double totalBill, Integer quantity, List<Product> products, User user) {
         this.id = id;
         this.totalBill = totalBill;
+        this.quantity = quantity;
         this.products = products;
         this.user = user;
     }
@@ -46,6 +51,14 @@ public class Cart {
 
     public void setTotalBill(Double totalBill) {
         this.totalBill = totalBill;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 
     public List<Product> getProducts() {

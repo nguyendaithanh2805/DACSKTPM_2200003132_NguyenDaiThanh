@@ -32,14 +32,6 @@ public class Product {
     @JoinColumn(name = "category_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Product_Category"))
     private Category category;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "tbl_product_cart",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "cart_id")
-    )
-    private List<Cart> carts;
-
     @ManyToMany
     @JoinTable(
             name = "tbl_order_detail",
@@ -52,13 +44,16 @@ public class Product {
     @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Product_User"))
     private User user;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "tbl_Cart_Product",
+            joinColumns = @JoinColumn(name = "cart_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private List<Cart> carts;
     public Product() {
     }
 
-    public Product(Long id, String name, String description,
-                   Double discount, String image, Integer quantity,
-                   Double sellingPrice, Category category,
-                   List<Cart> carts, List<Order> orders, User user) {
+    public Product(Long id, String name, String description, Double discount, String image, Integer quantity, Double sellingPrice, Category category, List<Order> orders, User user, List<Cart> carts) {
         Id = id;
         this.name = name;
         this.description = description;
@@ -67,9 +62,9 @@ public class Product {
         this.quantity = quantity;
         this.sellingPrice = sellingPrice;
         this.category = category;
-        this.carts = carts;
         this.orders = orders;
         this.user = user;
+        this.carts = carts;
     }
 
     public Long getId() {
@@ -136,14 +131,6 @@ public class Product {
         this.category = category;
     }
 
-    public List<Cart> getCarts() {
-        return carts;
-    }
-
-    public void setCarts(List<Cart> carts) {
-        this.carts = carts;
-    }
-
     public List<Order> getOrders() {
         return orders;
     }
@@ -158,5 +145,13 @@ public class Product {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Cart> getCarts() {
+        return carts;
+    }
+
+    public void setCarts(List<Cart> carts) {
+        this.carts = carts;
     }
 }
