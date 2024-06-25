@@ -43,6 +43,7 @@ public class CartServiceImpl implements CartService{
                 product.setCarts(new ArrayList<>());
             }
             product.getCarts().add(cart);
+            product.setQuantity(product.getQuantity() - quantity);
             cartRepository.save(cart);
             logger.info("Cart save successfully");
             productRepository.save(product);
