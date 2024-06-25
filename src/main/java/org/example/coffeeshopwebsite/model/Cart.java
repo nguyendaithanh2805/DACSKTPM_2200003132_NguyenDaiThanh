@@ -19,8 +19,8 @@ public class Cart {
     @Column(nullable = false)
     private Integer quantity;
 
-    @ManyToMany(mappedBy = "carts", fetch = FetchType.EAGER)
-    private List<Product> products;
+    @OneToMany(mappedBy = "cart")
+    private List<ProductCart> productCarts;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Cart_User"))
@@ -29,11 +29,11 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(Long id, Double totalBill, Integer quantity, List<Product> products, User user) {
+    public Cart(Long id, Double totalBill, Integer quantity, List<ProductCart> productCarts, User user) {
         this.id = id;
         this.totalBill = totalBill;
         this.quantity = quantity;
-        this.products = products;
+        this.productCarts = productCarts;
         this.user = user;
     }
 
@@ -61,12 +61,12 @@ public class Cart {
         this.quantity = quantity;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public List<ProductCart> getProductCarts() {
+        return productCarts;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setProductCarts(List<ProductCart> productCarts) {
+        this.productCarts = productCarts;
     }
 
     public User getUser() {
