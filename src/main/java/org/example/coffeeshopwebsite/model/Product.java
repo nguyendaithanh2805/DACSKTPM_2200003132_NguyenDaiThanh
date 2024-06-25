@@ -45,9 +45,9 @@ public class Product {
     private User user;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "tbl_Cart_Product",
-            joinColumns = @JoinColumn(name = "cart_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
+    @JoinTable(name = "tbl_Prouct_cart",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "cart_id")
     )
     private List<Cart> carts;
     public Product() {
