@@ -137,14 +137,14 @@
         const quantity = quantityInput.value;
 
         // Kiem tra nguoi dung da dang nhap hay chua
-        fetch('/user', { // Thay thế '/cart-add' bằng '/user' để kiểm tra đăng nhập
-            credentials: 'same-origin' // Bảo đảm cookie được gửi đi nếu cần thiết
+        fetch('/user', {
+            credentials: 'same-origin' // Gui kem cookie
         })
             .then(response => {
                 if (response.redirected && response.url.includes('/login')) {
                     window.location.href = '/admin/login';
                 } else {
-                    // Nếu đã đăng nhập, tiếp tục gọi API /cart-add
+                    // Neu da dang nhap thi redirect den API ben duoi
                     fetch('/cart-add?productId=' + productId + '&quantity=' + quantity, {
                         method: 'POST',
                         headers: {
@@ -163,7 +163,7 @@
             })
             .catch(error => console.error('Error:', error));
     }
-
+    // Xu ly tang, giam button
     function incrementQuantity(button) {
         const input = button.parentElement.querySelector('.quantity-input');
         const max = input.getAttribute('data-max');
