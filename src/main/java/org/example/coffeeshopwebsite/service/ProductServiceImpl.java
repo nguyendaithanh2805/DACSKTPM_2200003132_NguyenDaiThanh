@@ -2,6 +2,7 @@ package org.example.coffeeshopwebsite.service;
 
 import org.example.coffeeshopwebsite.model.Category;
 import org.example.coffeeshopwebsite.model.Product;
+import org.example.coffeeshopwebsite.model.User;
 import org.example.coffeeshopwebsite.repository.CategoryRepository;
 import org.example.coffeeshopwebsite.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,12 @@ public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
+    private final UserService userService;
     @Autowired
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, UserService userService) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -30,14 +33,15 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public void saveProduct(Product product, Long categoryId, Long productId) {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("Category not found for ID ::" + categoryId));
+        User user = userService.getCurrentUser();
         if (productId == null) {
             product.setName(product.getName());
             product.setDiscount(product.getDiscount());
             product.setImage(product.getImage());
             product.setQuantity(product.getQuantity());
-            product.setSellingPrice(product.getSellingPrice());
+            product.setSellingPrice(product.getSellingPrice() - product.getDiscount());
             product.setCategory(category);
-            product.setUser(product.getUser());
+            product.setUser(user);
             productRepository.save(product);
         } else {
             Optional<Product> optionalProduct = productRepository.findById(productId);
@@ -58,7 +62,7 @@ public class ProductServiceImpl implements ProductService{
         existingProduct.setQuantity(product.getQuantity());
         existingProduct.setSellingPrice(product.getSellingPrice() - product.getDiscount());
         existingProduct.setCategory(category);
-        existingProduct.setUser(product.getUser());
+        existingProduct.setUser(userService.getCurrentUser());
         return existingProduct;
     }
 
