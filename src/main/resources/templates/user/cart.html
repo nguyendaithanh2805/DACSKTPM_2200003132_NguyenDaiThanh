@@ -80,6 +80,15 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div style="font-size: 20px;">
+                            <form th:action="@{/checkout}" th:object="${order}" method="POST">
+                                <label>
+                                    Address
+                                    <input type="text" placeholder="Address..." name="address" th:field="*{address}" style="border-style: solid;">
+                                </label>
+                                <button class="btn btn-success" type="submit">Check out</button>
+                            </form>
+                        </div>
                     </div>
             </div>
         </div>
