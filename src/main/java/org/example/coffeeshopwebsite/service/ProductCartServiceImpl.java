@@ -39,4 +39,10 @@ public class ProductCartServiceImpl implements ProductCartService {
         User user = userService.getCurrentUser();
         return productCartRepository.findAllProductFromCartByUser(user.getId());
     }
+
+    @Override
+    public void deleteProductFromCartById(Long productCartId) {
+        productCartRepository.deleteById(productCartId);
+        logger.info("Delete product cart success");
+    }
 }
