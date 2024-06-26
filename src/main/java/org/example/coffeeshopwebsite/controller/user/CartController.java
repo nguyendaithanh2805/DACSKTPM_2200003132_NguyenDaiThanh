@@ -3,8 +3,10 @@ package org.example.coffeeshopwebsite.controller.user;
 import jakarta.servlet.http.HttpSession;
 import org.example.coffeeshopwebsite.model.Cart;
 import org.example.coffeeshopwebsite.model.Product;
+import org.example.coffeeshopwebsite.model.ProductCart;
 import org.example.coffeeshopwebsite.model.User;
 import org.example.coffeeshopwebsite.service.CartService;
+import org.example.coffeeshopwebsite.service.ProductCartService;
 import org.example.coffeeshopwebsite.service.ProductService;
 import org.example.coffeeshopwebsite.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +23,11 @@ import java.util.List;
 @Controller
 public class CartController {
     private final CartService cartService;
+    private final ProductCartService productCartService;
     @Autowired
-    public CartController(CartService cartService) {
+    public CartController(CartService cartService, ProductCartService productCartService) {
         this.cartService = cartService;
+        this.productCartService = productCartService;
     }
 
     @PostMapping("/cart-add")
@@ -34,8 +38,8 @@ public class CartController {
 
     @GetMapping("/cart-view")
     public String showCart(Model model) {
-        List<Cart> carts = cartService.getCartByUser();
-        model.addAttribute("carts", carts);
+        List<ProductCart> productCarts = productCartService.getAllProductByUser();
+        model.addAttribute("productCarts", productCarts);
         return "user/cart";
     }
 }
