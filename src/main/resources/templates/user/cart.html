@@ -65,7 +65,7 @@
                                 <td th:text="${productCart.getQuantity()}"></td>
                                 <td th:text="${productCart.getCart().getTotalBill()}"></td>
                                 <td>
-                                    <a th:href="@{/cart-delete(id=${productCart.id})}">
+                                    <a th:href="@{/cart-delete(productCartId=${productCart.id})}">
                                         <button class="btn btn-danger">Delete</button>
                                     </a>
                                 </td>
