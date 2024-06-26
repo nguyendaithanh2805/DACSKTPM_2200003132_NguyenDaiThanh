@@ -1,5 +1,7 @@
 package org.example.coffeeshopwebsite.model;
+
 import jakarta.persistence.*;
+
 import java.util.Date;
 import java.util.List;
 
@@ -19,30 +21,30 @@ public class Order {
 
     @Column(nullable = false)
     private Boolean status;
-    private String note;
 
-    @ManyToMany(mappedBy = "orders")
-    private List<Product> products;
+    private String address;
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Payment payment;
 
-    @OneToOne
-    @JoinColumn(name = "shipping_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Order_Shipping"))
-    private Shipping shipping;
-
+    @OneToMany(mappedBy = "order")
+    private List<OrderDetail> orderDetails;
     public Order() {
     }
 
-    public Order(Long id, Date orderDate, Date shippingDate, Boolean status, String note, List<Product> products, Payment payment, Shipping shipping) {
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
+    public Order(Long id, Date orderDate, Date shippingDate, Boolean status, String address, Payment payment, List<OrderDetail> orderDetails, User user) {
         this.id = id;
         this.orderDate = orderDate;
         ShippingDate = shippingDate;
         this.status = status;
-        this.note = note;
-        this.products = products;
+        this.address = address;
         this.payment = payment;
-        this.shipping = shipping;
+        this.orderDetails = orderDetails;
+        this.user = user;
     }
 
     public Long getId() {
@@ -77,20 +79,12 @@ public class Order {
         this.status = status;
     }
 
-    public String getNote() {
-        return note;
+    public String getAddress() {
+        return address;
     }
 
-    public void setNote(String note) {
-        this.note = note;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Payment getPayment() {
@@ -101,11 +95,19 @@ public class Order {
         this.payment = payment;
     }
 
-    public Shipping getShipping() {
-        return shipping;
+    public List<OrderDetail> getOrderDetails() {
+        return orderDetails;
     }
 
-    public void setShipping(Shipping shipping) {
-        this.shipping = shipping;
+    public void setOrderDetails(List<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
