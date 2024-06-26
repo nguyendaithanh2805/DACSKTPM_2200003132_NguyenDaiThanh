@@ -48,10 +48,4 @@ public class CartServiceImpl implements CartService{
             productCartService.saveProductCart(cart, product, quantity);
         }
     }
-
-    @Override
-    public List<Cart> getCartByUser() {
-        User user = userService.getCurrentUser();
-        return cartRepository.findByUser(user);
-    }
 }

@@ -3,20 +3,25 @@ package org.example.coffeeshopwebsite.service;
 import org.example.coffeeshopwebsite.model.Cart;
 import org.example.coffeeshopwebsite.model.Product;
 import org.example.coffeeshopwebsite.model.ProductCart;
+import org.example.coffeeshopwebsite.model.User;
 import org.example.coffeeshopwebsite.repository.ProductCartRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductCartServiceImpl implements ProductCartService {
     private final Logger logger = LoggerFactory.getLogger(ProductCartServiceImpl.class);
     private final ProductCartRepository productCartRepository;
+    private final UserService userService;
 
     @Autowired
-    public ProductCartServiceImpl(ProductCartRepository productCartRepository) {
+    public ProductCartServiceImpl(ProductCartRepository productCartRepository, UserService userService) {
         this.productCartRepository = productCartRepository;
+        this.userService = userService;
     }
 
     @Override
@@ -27,5 +32,11 @@ public class ProductCartServiceImpl implements ProductCartService {
         productCart.setQuantity(quantity);
         productCartRepository.save(productCart);
         logger.info("Saved product cart successfully");
+    }
+
+    @Override
+    public List<ProductCart> getAllProductByUser() {
+        User user = userService.getCurrentUser();
+        return productCartRepository.findAllProductFromCartByUser(user.getId());
     }
 }
