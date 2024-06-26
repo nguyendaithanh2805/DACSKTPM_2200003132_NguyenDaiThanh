@@ -10,4 +10,6 @@ import java.util.List;
 public interface ProductCartService {
     void saveProductCart(Cart cart, Product product, Integer quantity);
     List<ProductCart> getAllProductByUser();
+
+    void deleteProductFromCartById(Long productCartId);
 }
