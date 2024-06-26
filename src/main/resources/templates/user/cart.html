@@ -44,35 +44,39 @@
         <div class="container">
             <div class="row" >
                 <div class="col-sm-12 col-md-6 col-lg-6">
-                    <table class="table table-striped">
-                       <thead>
-                            <tr>
-                                <th scope="col">Product name</th>
-                                <th scope="col">Image</th>
-                                <th scope="col">Selling price</th>
-                                <th scope="col">Quantity</th>
-                                <th scope="col">Total bill</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                       </thead>
-                        <tbody>
-                            <tr th:each="productCart : ${productCarts}">
-                                <td th:text="${productCart.getProduct().getName()}"></td>
-                                <td>
-                                    <img th:src="@{../user/images/__${productCart.getProduct().getImage()}__}" alt="" style="max-width: 50px;">
-                                </td>
-                                <td th:text="${productCart.getProduct().getSellingPrice()}"></td>
-                                <td th:text="${productCart.getQuantity()}"></td>
-                                <td th:text="${productCart.getCart().getTotalBill()}"></td>
-                                <td>
-                                    <a th:href="@{/cart-delete(productCartId=${productCart.id})}">
-                                        <button class="btn btn-danger">Delete</button>
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                    <div th:if="${#lists.isEmpty(productCarts)}" id="emptyCartMessage" style="display: flex;justify-content: center;align-items: center;">
+                        <a th:href="@{/menu}" class="btn btn-primary">Go to menu</a>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6" th:if="${!#lists.isEmpty(productCarts)}">
+                        <table class="table table-striped">
+                           <thead>
+                                <tr>
+                                    <th scope="col">Product name</th>
+                                    <th scope="col">Image</th>
+                                    <th scope="col">Selling price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Total bill</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                           </thead>
+                            <tbody>
+                                <tr th:each="productCart : ${productCarts}">
+                                    <td th:text="${productCart.getProduct().getName()}"></td>
+                                    <td>
+                                        <img th:src="@{../user/images/__${productCart.getProduct().getImage()}__}" alt="" style="max-width: 50px;">
+                                    </td>
+                                    <td th:text="${productCart.getProduct().getSellingPrice()}"></td>
+                                    <td th:text="${productCart.getQuantity()}"></td>
+                                    <td th:text="${productCart.getCart().getTotalBill()}"></td>
+                                    <td>
+                                        <a th:href="@{/cart-delete(productCartId=${productCart.id})}">
+                                            <button class="btn btn-danger">Delete</button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
             </div>
         </div>
     </div>
