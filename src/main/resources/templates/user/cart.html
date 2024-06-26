@@ -38,11 +38,15 @@
 
 <!-- menu section starts -->
 
-<section class="menu">
-
+<section class="menu" style="
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    flex-direction: column;
+">
     <div class="box-container">
         <div class="container">
-            <div class="row" >
+            <div class="row">
                 <div class="col-sm-12 col-md-6 col-lg-6">
                     <div th:if="${#lists.isEmpty(productCarts)}" id="emptyCartMessage" style="display: flex;justify-content: center;align-items: center;">
                         <a th:href="@{/menu}" class="btn btn-primary">Go to menu</a>
