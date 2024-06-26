@@ -1,5 +1,7 @@
 package org.example.coffeeshopwebsite.model;
+
 import jakarta.persistence.*;
+
 import java.util.List;
 
 @Entity
@@ -32,25 +34,17 @@ public class Product {
     @JoinColumn(name = "category_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Product_Category"))
     private Category category;
 
-    @ManyToMany
-    @JoinTable(
-            name = "tbl_order_detail",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "order_id")
-    )
-    private List<Order> orders;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "FK_Product_User"))
     private User user;
 
     @OneToMany(mappedBy = "product")
-    private List<ProductCart> productCarts;
+    private List<OrderDetail> orderDetails;
 
     public Product() {
     }
 
-    public Product(Long id, String name, String description, Double discount, String image, Integer quantity, Double sellingPrice, Category category, List<Order> orders, User user, List<ProductCart> productCarts) {
+    public Product(Long id, String name, String description, Double discount, String image, Integer quantity, Double sellingPrice, Category category, User user, List<OrderDetail> orderDetails) {
         Id = id;
         this.name = name;
         this.description = description;
@@ -59,9 +53,8 @@ public class Product {
         this.quantity = quantity;
         this.sellingPrice = sellingPrice;
         this.category = category;
-        this.orders = orders;
         this.user = user;
-        this.productCarts = productCarts;
+        this.orderDetails = orderDetails;
     }
 
     public Long getId() {
@@ -128,14 +121,6 @@ public class Product {
         this.category = category;
     }
 
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
     public User getUser() {
         return user;
     }
@@ -144,11 +129,11 @@ public class Product {
         this.user = user;
     }
 
-    public List<ProductCart> getProductCarts() {
-        return productCarts;
+    public List<OrderDetail> getOrderDetails() {
+        return orderDetails;
     }
 
-    public void setProductCarts(List<ProductCart> productCarts) {
-        this.productCarts = productCarts;
+    public void setOrderDetails(List<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
     }
 }

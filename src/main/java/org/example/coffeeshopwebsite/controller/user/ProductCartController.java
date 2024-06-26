@@ -1,5 +1,6 @@
 package org.example.coffeeshopwebsite.controller.user;
 
+import org.example.coffeeshopwebsite.model.Order;
 import org.example.coffeeshopwebsite.model.ProductCart;
 import org.example.coffeeshopwebsite.service.ProductCartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class ProductCartController {
     public String showCart(Model model) {
         List<ProductCart> productCarts = productCartService.getAllProductByUser();
         model.addAttribute("productCarts", productCarts);
+        model.addAttribute("order", new Order());
         return "user/cart";
     }
 

@@ -3,6 +3,7 @@ package org.example.coffeeshopwebsite.service;
 import org.example.coffeeshopwebsite.model.Article;
 import org.example.coffeeshopwebsite.model.Category;
 import org.example.coffeeshopwebsite.model.Product;
+import org.example.coffeeshopwebsite.model.User;
 import org.example.coffeeshopwebsite.repository.ArticleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,18 +15,22 @@ import java.util.Optional;
 public class ArticleServiceImpl implements ArticleService{
 
     private final ArticleRepository articleRepository;
+    private final UserService userService;
 
     @Autowired
-    public ArticleServiceImpl(ArticleRepository articleRepository) {
+    public ArticleServiceImpl(ArticleRepository articleRepository, UserService userService) {
         this.articleRepository = articleRepository;
+        this.userService = userService;
     }
 
     @Override
     public void saveArticle(Article article, Long articleId) {
+        User user = userService.getCurrentUser();
         if (articleId == null) {
             article.setName(article.getName());
             article.setDescription(article.getDescription());
             article.setImage(article.getImage());
+            article.setUser(user);
             articleRepository.save(article);
         } else {
             Optional<Article> optionalArticle = articleRepository.findById(articleId);
@@ -34,6 +39,7 @@ public class ArticleServiceImpl implements ArticleService{
                 existingArticle.setName(article.getName());
                 existingArticle.setDescription(article.getDescription());
                 existingArticle.setImage(article.getImage());
+                existingArticle.setUser(user);
                 articleRepository.save(existingArticle);
             } else
                 throw new RuntimeException("Article not found for ID ::" + article.getId());
